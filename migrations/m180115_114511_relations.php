@@ -1,0 +1,110 @@
+<?php
+
+use yii\db\Migration;
+
+/**
+ * Class m180115_114511_relations
+ */
+class m180115_114511_relations extends Migration
+{
+    public function up()
+    {
+        $this->createIndex(
+            'contact_person_company_id_index',
+            'contactPerson',
+            'company_id'
+        );
+        $this->createIndex(
+            'call_company_id_index',
+            'call',
+            'company_id'
+        );
+        $this->createIndex(
+            'status_company_id_index',
+            'status',
+            'company_id'
+        );
+        $this->createIndex(
+            'task_company_id_index',
+            'task',
+            'company_id'
+        );
+        $this->createIndex(
+            'offer_status_id_index',
+            'offerStatus',
+            'status_id'
+        );
+        $this->createIndex(
+            'status_offer_id_index',
+            'offerStatus',
+            'offer_id'
+        );
+        //===================================
+        $this->addForeignKey(
+            'fk-contactPerson-company',
+            'contactPerson',
+            'company_id',
+            'company',
+            'id',
+            'CASCADE'
+        );
+        $this->addForeignKey(
+            'fk-call-company',
+            'call',
+            'company_id',
+            'company',
+            'id',
+            'CASCADE'
+        );
+        $this->addForeignKey(
+            'fk-status-company',
+            'status',
+            'company_id',
+            'company',
+            'id',
+            'CASCADE'
+        );
+        $this->addForeignKey(
+            'fk-task-company',
+            'task',
+            'company_id',
+            'company',
+            'id',
+            'CASCADE'
+        );
+        $this->addForeignKey(
+            'fk-offer-status',
+            'offerStatus',
+            'status_id',
+            'status',
+            'id',
+            'CASCADE'
+        );
+        $this->addForeignKey(
+            'fk-status-offer',
+            'offerStatus',
+            'offer_id',
+            'offer',
+            'id',
+            'CASCADE'
+        );
+    }
+
+    public function down()
+    {
+        $this->dropIndex('contact_person_company_id_index','contactPerson');
+        $this->dropIndex('call_company_id_index','call');
+        $this->dropIndex('status_company_id_index','status');
+        $this->dropIndex('task_company_id_index','task');
+        $this->dropIndex('offer_status_id_index','statusOffer');
+        $this->dropIndex('status_offer_id_index','statusOffer');
+
+        $this->dropForeignKey('fk-contactPerson-company','contactPerson');
+        $this->dropForeignKey('fk-call-company','call');
+        $this->dropForeignKey('fk-status-company','status');
+        $this->dropForeignKey('fk-task-company','task');
+        $this->dropForeignKey('fk-offer-status','offerStatus');
+        $this->dropForeignKey('fk-status-offer','offerStatus');
+
+    }
+}
