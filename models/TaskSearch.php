@@ -69,13 +69,14 @@ class TaskSearch extends Task
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'dateExec' => $this->dateExec,
+//            'dateExec' => $this->dateExec,
             'checked' => $this->checked,
             'company_id' => $this->company_id,
         ]);
 
         $query->andFilterWhere(['like', 'description', $this->description]);
         $query->andFilterWhere(['like', 'company.name', $this->company->name]);
+        $query->andFilterWhere(['like', 'dateExec', $this->dateExec]);
 
         return $dataProvider;
     }

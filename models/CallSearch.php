@@ -63,11 +63,12 @@ class CallSearch extends Call
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'date' => $this->date,
+//            'date' => $this->date,
             'company_id' => $this->company_id,
         ]);
 
         $query->andFilterWhere(['like', 'description', $this->description]);
+        $query->andFilterWhere(['like', 'date', $this->date]);
 
         return $dataProvider;
     }
