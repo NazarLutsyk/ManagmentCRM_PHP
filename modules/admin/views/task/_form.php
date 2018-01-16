@@ -34,8 +34,8 @@ use yii\widgets\ActiveForm;
             $companies,
             [
                 'class' => 'select2-single',
-                'name' => 'company_id',
-                'id' => 'company_id'
+//                'name' => 'company_id',
+//                'id' => 'company_id'
             ]
         )->label('Company') ?>
     <? else: ?>
