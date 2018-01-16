@@ -47,6 +47,9 @@ class CompanySearch extends Company
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 20
+            ]
         ]);
 
         $this->load($params);

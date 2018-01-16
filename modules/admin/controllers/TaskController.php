@@ -69,7 +69,8 @@ class TaskController extends Controller
         $model = new Task();
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->company_id = Yii::$app->request->post('company_id');
+            if (empty($model->company_id))
+                $model->company_id = Yii::$app->request->post('company_id');
             if ($model->save())
                 return $this->redirect(['view', 'id' => $model->id]);
         }

@@ -12,7 +12,7 @@ use app\models\Task;
  */
 class TaskSearch extends Task
 {
-    var $companyName;
+    var $companyname;
     /**
      * @inheritdoc
      */
@@ -20,7 +20,7 @@ class TaskSearch extends Task
     {
         return [
             [['id', 'checked', 'company_id'], 'integer'],
-            [['description', 'dateExec', 'companyName'], 'safe'],
+            [['description', 'dateExec', 'companyname'], 'safe'],
         ];
     }
 
@@ -48,9 +48,12 @@ class TaskSearch extends Task
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 20
+            ]
         ]);
 
-        $dataProvider->sort->attributes['companyName'] = [
+        $dataProvider->sort->attributes['companyname'] = [
             'asc' => ['company.name' => SORT_ASC],
             'desc' => ['company.name' => SORT_DESC],
         ];
@@ -72,7 +75,7 @@ class TaskSearch extends Task
         ]);
 
         $query->andFilterWhere(['like', 'description', $this->description]);
-        $query->andFilterWhere(['like', 'companyName', $this->company->name]);
+        $query->andFilterWhere(['like', 'company.name', $this->company->name]);
 
         return $dataProvider;
     }

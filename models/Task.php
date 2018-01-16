@@ -72,7 +72,7 @@ class Task extends \yii\db\ActiveRecord
         return $this->hasOne(Company::className(), ['id' => 'company_id']);
     }
 
-    public function getCompanyName(){
+    public function getCompanyname(){
         return $this->company->name;
     }
 }

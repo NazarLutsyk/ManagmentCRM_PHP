@@ -5,6 +5,7 @@ use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Company */
@@ -44,11 +45,11 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
-    <? if ($contactPersons->count > 0): ?>
-    <h2>Contact Persons</h2>
+        <h2>Contact Persons</h2>
+        <?php Pjax::begin(); ?>
         <?= GridView::widget([
             'dataProvider' => $contactPersons,
-//        'filterModel' => $searchModel,
+            'filterModel' => $contactPersonSearch,
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
@@ -75,48 +76,48 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ],
         ]); ?>
-    <? endif; ?>
+        <?php Pjax::end(); ?>
 
-    <? if ($statuses->count > 0): ?>
-    <h2>Statuses</h2>
-    <?= GridView::widget([
-        'dataProvider' => $statuses,
-//        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            'id',
-            'value',
-            [
-                'attribute' => offers,
-                'value' => function($model){
-                    $offers = ArrayHelper::map($model->getOffers()->asArray()->all(), 'id', 'name');
-                    return MyHelper::builUl($offers);
-                },
-                'format' => 'html'
-            ],
-            [
-                'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}',
-                'buttons' => [
-                    'view' => function ($url, $model) {
-                        $url = \yii\helpers\Url::toRoute(['/admin/status/view', 'id' => $model->id]);
-                        return Html::a('SHOW', $url,
-                            [
-                                'title' => Yii::t('yii', 'View'),
-                                'class' => 'btn btn-primary btn-xs'
-                            ]);
+        <h2>Statuses</h2>
+        <?php Pjax::begin(); ?>
+        <?= GridView::widget([
+            'dataProvider' => $statuses,
+            'filterModel' => $statusSearch,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+                'id',
+                'value',
+                [
+                    'attribute' => 'offers',
+                    'value' => function ($model) {
+                        $offers = ArrayHelper::map($model->getOffers()->asArray()->all(), 'id', 'name');
+                        return MyHelper::builUl($offers);
                     },
-                ]
+                    'format' => 'html'
+                ],
+                [
+                    'class' => 'yii\grid\ActionColumn',
+                    'template' => '{view}',
+                    'buttons' => [
+                        'view' => function ($url, $model) {
+                            $url = \yii\helpers\Url::toRoute(['/admin/status/view', 'id' => $model->id]);
+                            return Html::a('SHOW', $url,
+                                [
+                                    'title' => Yii::t('yii', 'View'),
+                                    'class' => 'btn btn-primary btn-xs'
+                                ]);
+                        },
+                    ]
+                ],
             ],
-        ],
-    ]); ?>
-    <? endif; ?>
+        ]); ?>
+        <?php Pjax::end(); ?>
 
-    <? if ($tasks->count > 0): ?>
-    <h2>Tasks</h2>
-    <?= GridView::widget([
-        'dataProvider' => $tasks,
-//        'filterModel' => $searchModel,
+        <h2>Tasks</h2>
+        <?php Pjax::begin(); ?>
+        <?= GridView::widget([
+            'dataProvider' => $tasks,
+            'filterModel' => $taskSearch,
             'rowOptions' => function ($model, $key, $index, $grid) {
                 $now = new DateTime();
                 $dateExec = new DateTime($model->dateExec);
@@ -131,38 +132,38 @@ $this->params['breadcrumbs'][] = $this->title;
                     return ['style' => 'background-color:#5cb85c;'];
                 }
             },
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'description',
-            'dateExec',
-            'checked',
+                'id',
+                'description',
+                'dateExec',
+                'checked',
 //            'company_id',
 
-            [
-                'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}',
-                'buttons' => [
-                    'view' => function ($url, $model) {
-                        $url = \yii\helpers\Url::toRoute(['/admin/task/view', 'id' => $model->id]);
-                        return Html::a('SHOW', $url,
-                            [
-                                'title' => Yii::t('yii', 'View'),
-                                'class' => 'btn btn-primary btn-xs'
-                            ]);
-                    },
-                ]
+                [
+                    'class' => 'yii\grid\ActionColumn',
+                    'template' => '{view}',
+                    'buttons' => [
+                        'view' => function ($url, $model) {
+                            $url = \yii\helpers\Url::toRoute(['/admin/task/view', 'id' => $model->id]);
+                            return Html::a('SHOW', $url,
+                                [
+                                    'title' => Yii::t('yii', 'View'),
+                                    'class' => 'btn btn-primary btn-xs'
+                                ]);
+                        },
+                    ]
+                ],
             ],
-        ],
-    ]); ?>
-    <? endif; ?>
+        ]); ?>
+        <?php Pjax::end(); ?>
 
-    <? if ($calls->count > 0): ?>
-    <h2>Calls</h2>
+        <h2>Calls</h2>
+        <?php Pjax::begin(); ?>
         <?= GridView::widget([
             'dataProvider' => $calls,
-//        'filterModel' => $searchModel,
+            'filterModel' => $callSearch,
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
                 'id',
@@ -185,5 +186,5 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ],
         ]); ?>
-    <? endif; ?>
+        <?php Pjax::end(); ?>
 </div>

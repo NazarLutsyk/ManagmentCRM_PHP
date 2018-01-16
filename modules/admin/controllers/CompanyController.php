@@ -9,6 +9,7 @@ use app\models\TaskSearch;
 use Yii;
 use app\models\Company;
 use app\models\CompanySearch;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -56,21 +57,50 @@ class CompanyController extends Controller
      */
     public function actionView($id)
     {
+        $queryParams = Yii::$app->request->queryParams;
         $callSearch = new CallSearch();
-        $calls = $callSearch->search(['company_id' => $id]);
+        if (empty($queryParams['CallSearch']))
+            $calls = $callSearch->search(['CallSearch' => ['company_id' => $id]]);
+        else {
+            ArrayHelper::setValue($queryParams, 'CallSearch.company_id', $id);
+            $calls = $callSearch->search($queryParams);
+        }
+
         $taskSearch = new TaskSearch();
-        $tasks = $taskSearch->search(['company_id' => $id]);
+        if (empty($queryParams['TaskSearch']))
+            $tasks = $taskSearch->search(['TaskSearch' => ['company_id' => $id]]);
+        else {
+            ArrayHelper::setValue($queryParams, 'TaskSearch.company_id', $id);
+            $tasks = $taskSearch->search($queryParams);
+        }
+
         $statusSearch = new StatusSearch();
-        $statuses = $statusSearch->search(['company_id' => $id]);
-        $tasks = $taskSearch->search(['company_id' => $id]);
+        if (empty($queryParams['StatusSearch']))
+            $statuses = $statusSearch->search(['StatusSearch' => ['company_id' => $id]]);
+        else {
+            ArrayHelper::setValue($queryParams, 'StatusSearch.company_id', $id);
+            $statuses = $statusSearch->search($queryParams);
+        }
+
         $contactPersonSearch = new ContactPersonSearch();
-        $contactPersons = $contactPersonSearch->search(['company_id' => $id]);
+        if (empty($queryParams['ContactPersonSearch']))
+            $contactPersons = $contactPersonSearch->search(['ContactPersonSearch' => ['company_id' => $id]]);
+        else{
+            ArrayHelper::setValue($queryParams, 'ContactPersonSearch.company_id', $id);
+            $contactPersons = $contactPersonSearch->search($queryParams);
+        }
+
         return $this->render('view', [
             'model' => $this->findModel($id),
             'calls' => $calls,
+            'callSearch' => $callSearch,
             'tasks' => $tasks,
             'statuses' => $statuses,
             'contactPersons' => $contactPersons,
+            'callSearch' => $callSearch,
+            'taskSearch' => $taskSearch,
+            'statusSearch' => $statusSearch,
+            'contactPersonSearch' => $contactPersonSearch
         ]);
     }
 
