@@ -71,7 +71,7 @@ class StatusController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $offers = Yii::$app->request->post('offers');
-            foreach ($offers as $offer){
+            foreach ($offers as $offer) {
                 $offerStatus = new OfferStatus();
                 $offerStatus->offer_id = $offer;
                 $offerStatus->status_id = $model->id;
@@ -101,6 +101,16 @@ class StatusController extends Controller
         $offers = ArrayHelper::map(Offer::find()->all(), 'id', 'name');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $offers = Yii::$app->request->post('offers');
+            OfferStatus::deleteAll('status_id=:id',['id' => $model->id]);
+            if (sizeof($offers) >= 0) {
+                foreach ($offers as $offer) {
+                    $offerStatus = new OfferStatus();
+                    $offerStatus->offer_id = $offer;
+                    $offerStatus->status_id = $model->id;
+                    $offerStatus->save();
+                }
+            }
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

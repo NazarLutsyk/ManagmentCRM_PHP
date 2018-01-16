@@ -33,6 +33,7 @@ use yii\widgets\ActiveForm;
         <?= $form->field($model, 'company_id')->dropDownList(
             $companies,
             [
+                'prompt' => 'Select company...',
                 'class' => 'select2-single',
 //                'name' => 'company_id',
 //                'id' => 'company_id'

@@ -22,9 +22,12 @@ use yii\widgets\ActiveForm;
             ArrayHelper::getColumn($model->getOffers()->asArray()->all(),'id'),
             $offers,
             [
+                'prompt' => 'Select offers...',
                 'class' => 'select2-multiple',
                 'multiple' => true,
-                'id' => 'offers',
+                'required' => true
+//                'name' => 'offers[]',
+//                'id' => 'offers',
             ]
         ); ?>
     </div>
