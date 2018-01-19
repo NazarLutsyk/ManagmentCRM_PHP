@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\Json;
 
 /**
  * This is the model class for table "company".
@@ -21,6 +22,27 @@ use Yii;
  */
 class Company extends \yii\db\ActiveRecord
 {
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($insert) {
+            Yii::info('Company created: ' . Json::encode($this) .
+                'Admin:' . Json::encode(Yii::$app->user->identity),
+                'my_info_log');
+        } else {
+            Yii::info('Company updated: ' . Json::encode($this) .
+                'Admin:' . Json::encode(Yii::$app->user->identity),
+                'my_info_log');
+        }
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    public function afterDelete()
+    {
+        Yii::info('Company deleted: ' . Json::encode($this) .
+            'Admin:' . Json::encode(Yii::$app->user->identity),
+            'my_info_log');
+        parent::afterDelete();
+    }
     /**
      * @inheritdoc
      */

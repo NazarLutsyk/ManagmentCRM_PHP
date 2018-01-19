@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\Json;
 
 /**
  * This is the model class for table "offer".
@@ -14,6 +15,27 @@ use Yii;
  */
 class Offer extends \yii\db\ActiveRecord
 {
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($insert) {
+            Yii::info('Offer created: ' . Json::encode($this) .
+                'Admin:' . Json::encode(Yii::$app->user->identity),
+                'my_info_log');
+        } else {
+            Yii::info('Offer updated: ' . Json::encode($this) .
+                'Admin:' . Json::encode(Yii::$app->user->identity),
+                'my_info_log');
+        }
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    public function afterDelete()
+    {
+        Yii::info('Offer deleted: ' . Json::encode($this) .
+            'Admin:' . Json::encode(Yii::$app->user->identity),
+            'my_info_log');
+        parent::afterDelete();
+    }
     /**
      * @inheritdoc
      */

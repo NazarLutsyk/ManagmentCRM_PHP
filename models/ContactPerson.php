@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\Json;
 
 /**
  * This is the model class for table "contactPerson".
@@ -19,6 +20,27 @@ use Yii;
  */
 class ContactPerson extends \yii\db\ActiveRecord
 {
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($insert) {
+            Yii::info('Contact Person created: ' . Json::encode($this) .
+                'Admin:' . Json::encode(Yii::$app->user->identity),
+                'my_info_log');
+        } else {
+            Yii::info('Contact Person updated: ' . Json::encode($this) .
+                'Admin:' . Json::encode(Yii::$app->user->identity),
+                'my_info_log');
+        }
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    public function afterDelete()
+    {
+        Yii::info('Contact Person deleted: ' . Json::encode($this) .
+            'Admin:' . Json::encode(Yii::$app->user->identity),
+            'my_info_log');
+        parent::afterDelete();
+    }
     /**
      * @inheritdoc
      */
